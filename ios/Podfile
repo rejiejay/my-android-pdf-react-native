@@ -12,6 +12,11 @@ target 'AndroidPdfReactNative' do
     :hermes_enabled => false
   )
 
+
+
+
+
+
   target 'AndroidPdfReactNativeTests' do
     inherit! :complete
     # Pods for testing
