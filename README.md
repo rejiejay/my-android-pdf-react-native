@@ -42,6 +42,12 @@ android {
 
 cd android && ./gradlew clean && cd ..
 
+## async-storage
+npm install @react-native-async-storage/async-storage --save -d
+
+## react-navigation
+npm install --save react-navigation
+
 
 ## 加载
 yarn install -d
@@ -53,3 +59,11 @@ cd android && ./gradlew clean && cd ..
 
 ## 弹出Debug
 adb shell input keyevent 82
+
+## 安卓开发自带模拟器联网问题
+1.打开SDK目录进入emulator文件夹
+2.ipconfig /all查看本机DNS
+3.输入命令 .\emulator -avd 模拟器名 -dns-server 你自己的DNS地址
+```
+emulator -avd Android_10 -dns-server 202.96.134.133
+```

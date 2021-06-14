@@ -1,14 +1,19 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import RootNavigator from './../../router/index';
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    }
+});
 
-const Entry = () => {
-  return (
-    <View>
-      <Text>Hello World1</Text>
-    </View>
-  );
-};
+class Entry extends React.Component {
+    render() {
+        return <View style={styles.container}>
+            <RootNavigator />
+        </View>
+    }
+}
 
 export default Entry;

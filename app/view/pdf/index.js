@@ -7,55 +7,69 @@
  */
 
 import React from 'react';
-import {StyleSheet, Dimensions, View} from 'react-native';
+import { StyleSheet, Dimensions, View, Text } from 'react-native';
 
 import Pdf from 'react-native-pdf';
 
-export default class PDFExample extends React.Component {
-  render() {
-    const source = {
-      uri: 'http://samples.leanpub.com/thereactnativebook-sample.pdf',
-      cache: true,
-    };
-    //const source = require('./test.pdf');  // ios only
-    //const source = {uri:'bundle-assets://test.pdf'};
+export default class PDF extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            source: '',
+            page: 0
+        };
+    }
 
-    //const source = {uri:'file:///sdcard/test.pdf'};
-    //const source = {uri:"data:application/pdf;base64,JVBERi0xLjcKJc..."};
+    componentDidMount() {
+        const { source, page } = this.props
+        this.setState({
+            source: {
+                uri: `data:application/pdf;base64,${source}`,
+                cache: true,
+            },
+            page
+        })
+    }
 
-    return (
-      <View style={styles.container}>
-        <Pdf
-          source={source}
-          onLoadComplete={(numberOfPages, filePath) => {
-            console.log(`number of pages: ${numberOfPages}`);
-          }}
-          onPageChanged={(page, numberOfPages) => {
-            console.log(`current page: ${page}`);
-          }}
-          onError={error => {
-            console.log(error);
-          }}
-          onPressLink={uri => {
-            console.log(`Link presse: ${uri}`);
-          }}
-          style={styles.pdf}
-        />
-      </View>
-    );
-  }
+    render() {
+        const { source } = this.state
+
+        if (!source) return <View style={styles.container}><Text>正在加载...</Text></View>
+
+        return (
+            <View style={styles.container}>
+                <Pdf
+                    source={source}
+                    page={page}
+                    onLoadComplete={(numberOfPages, filePath) => {
+                        console.log(`number of pages: ${numberOfPages}`);
+                    }}
+                    onPageChanged={(page, numberOfPages) => {
+                        console.log(`current page: ${page}`);
+                    }}
+                    onError={error => {
+                        console.log(error);
+                    }}
+                    onPressLink={uri => {
+                        console.log(`Link presse: ${uri}`);
+                    }}
+                    style={styles.pdf}
+                />
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginTop: 25,
-  },
-  pdf: {
-    flex: 1,
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-  },
+    container: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        marginTop: 25,
+    },
+    pdf: {
+        flex: 1,
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+    },
 });
