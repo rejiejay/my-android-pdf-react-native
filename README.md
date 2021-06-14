@@ -40,13 +40,18 @@ android {
 +     }
 }
 
+cd android && gradlew clean && cd ..
 cd android && ./gradlew clean && cd ..
 
 ## async-storage
 npm install @react-native-async-storage/async-storage --save -d
 
-## react-navigation
+## react-navigation (暂时废弃)
 npm install --save react-navigation
+
+## 腾讯云对象存储  Android SDK
+1. 使用 mavenCentral 仓库
+2. 标准版 SDK
 
 
 ## 加载
