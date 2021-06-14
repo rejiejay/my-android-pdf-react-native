@@ -6,7 +6,7 @@ const routes = [
         key: 'list',
         screen: List,
         props: {},
-    }, 
+    },
     {
         key: 'pdf',
         screen: PDF,

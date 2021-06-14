@@ -10,7 +10,7 @@ export const navigate = (route, props) => {
 class NavigationComponent extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             stack: [
                 routes[0]
             ]
@@ -24,7 +24,7 @@ class NavigationComponent extends React.Component {
 
         const Screen = stack[0].screen
         const props = stack[0].props
-        return <Screen 
+        return <Screen
             {...props}
         />
     }
