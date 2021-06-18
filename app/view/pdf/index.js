@@ -7,34 +7,67 @@
  */
 
 import React from 'react';
-import { StyleSheet, Dimensions, View, Text } from 'react-native';
-
+import { StyleSheet, Dimensions, View, Text, BackHandler } from 'react-native';
 import Pdf from 'react-native-pdf';
+
+import { goBack } from './../../router';
+import { setFileCache, setFilePage } from './service';
 
 export default class PDF extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            source: '',
-            page: 0
+            source: false
         };
+
+        this.isCache = false;
+        this.page = 1;
     }
 
     componentDidMount() {
-        const { source, page } = this.props
+        const { uniformResourceLocator, page, isCache } = this.props;
+        this.isCache = isCache || false;
+        this.page = page || 1;
         this.setState({
             source: {
-                uri: `data:application/pdf;base64,${source}`,
+                uri: `https://rejiejay-1251940173.cos.ap-guangzhou.myqcloud.com/${uniformResourceLocator}`,
                 cache: true,
-            },
-            page
-        })
+            }
+        });
+
+        BackHandler.addEventListener('hardwareBackPress', this.hardwareBackPress);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.hardwareBackPress);
+    }
+
+    hardwareBackPress() {
+        goBack();
+        return true;
+    }
+
+    onPageChanged(page) {
+        const { uniformResourceLocator } = this.props;
+        setFilePage(uniformResourceLocator, page)
+    }
+
+    setCache() {
+        const { uniformResourceLocator } = this.props
+        this.isCache = true;
+        setFileCache(uniformResourceLocator);
     }
 
     render() {
+        const { page, isCache } = this
         const { source } = this.state
+        const self = this
 
         if (!source) return <View style={styles.container}><Text>正在加载...</Text></View>
+
+        if (!isCache) {
+            this.setCache();
+        }
 
         return (
             <View style={styles.container}>
@@ -45,7 +78,7 @@ export default class PDF extends React.Component {
                         console.log(`number of pages: ${numberOfPages}`);
                     }}
                     onPageChanged={(page, numberOfPages) => {
-                        console.log(`current page: ${page}`);
+                        self.onPageChanged(page)
                     }}
                     onError={error => {
                         console.log(error);

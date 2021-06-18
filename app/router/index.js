@@ -1,10 +1,16 @@
 import React from 'react';
+import _ from 'lodash';
+
 import routes from './routes';
 
 const navigationRef = React.createRef();
 
 export const navigate = (route, props) => {
     navigationRef.current.navigate(route, props);
+}
+
+export const goBack = () => {
+    navigationRef.current.goBack();
 }
 
 class NavigationComponent extends React.Component {
@@ -17,7 +23,34 @@ class NavigationComponent extends React.Component {
         };
     }
 
-    navigate(route, props) { }
+    navigate(route, props) {
+        const target = _.find(routes, ({ key }) => key === route);
+        const { stack } = this.state;
+
+        if (!target) {
+            return console.error(new Error(`This route${route} is not caught any route`));
+        }
+
+        this.setState({
+            stack: [
+                {
+                    ...target,
+                    props
+                },
+                ...stack
+            ]
+        });
+    }
+
+    goBack() {
+        const { stack } = this.state;
+
+        if (stack.length > 1) {
+            this.setState({
+                stack: stack.filter((i, key) => key !== 0)
+            });
+        }
+    }
 
     render() {
         const { stack } = this.state;

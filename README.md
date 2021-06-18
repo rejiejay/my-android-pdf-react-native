@@ -60,6 +60,7 @@ yarn install -d
 ## gradlew clean
 
 sudo chmod +x gradlew
+cd android && gradlew clean && cd ..
 cd android && ./gradlew clean && cd ..
 
 ## 弹出Debug
@@ -70,5 +71,31 @@ adb shell input keyevent 82
 2.ipconfig /all查看本机DNS
 3.输入命令 .\emulator -avd 模拟器名 -dns-server 你自己的DNS地址
 ```
-emulator -avd Android_10 -dns-server 202.96.134.133
+emulator -avd Android_10 -dns-server 192.168.88.90
+emulator -avd A9 -dns-server 192.168.88.90
 ```
+adb root
+adb shell
+getprop
+
+[net.dns1]: [10.0.2.3]
+[net.eth0.dns1]: [10.0.2.3]
+
+setprop net.dns1 192.168.88.90
+setprop net.eth0.dns1 192.168.88.90
+exit
+
+
+## react-native启动时红屏报错：Unable to load script.Make sure you're either running a metro server or that
+
+mkdir android/app/src/main/assets
+
+npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+
+## npx react-native start 
+http://localhost:8081/debugger-ui/
+http://localhost:8081/index.android.bundle?platform=android
+
+## Android Log (No)
+npx react-native log-ios
+npx react-native log-android
